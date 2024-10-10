@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Instalação
 
-## Getting Started
-
-First, run the development server:
+**Clone o repositório:**
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/LaboratoriumWeb/matc84-client.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Baixe as dependências do projeto:**
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+yarn
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**execute o projeto:**
 
-## Learn More
+```bash
+yarn dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+# Padronização das branch's
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Atenção:** As branch's devem ser criadas sempre a partir da **main**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Um branch git deve começar com uma categoria. Escolha uma destas: `feature`, `bugfix`, `hotfix`, ou `test`.
 
-## Deploy on Vercel
+Após a categoria, deve haver um " `/`" seguido pela referência do problema ou nova implementação no qual você está trabalhando. Se não houver referência, basta adicionar `no-ref`. Esta descrição deve ser curta e "kebab-case".
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Siga esse padrão:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+git checkout -b <category/description-in-kebab-case>
+```
+
+### Exemplo:
+
+```bash
+git checkout -b feature/criar-tela-de-login
+```
+
+# Padronização de commit
+
+Uma mensagem de commit deve começar com uma categoria de mudança. Você pode usar as 4 categorias a seguir para tudo: `feat`, `fix`, `refactor`, e `chore`.
+
+- `feat`é para adicionar um novo recurso
+- `fix`é para consertar um bug
+- `refactor`é para alterar o código para fins de desempenho ou conveniência (por exemplo, legibilidade)
+- `chore`serve para todo o resto (escrever documentação, formatar, adicionar testes, limpar código inútil etc.)
+
+Após a categoria, deve haver um " `:`" anunciando a descrição do commit.
+
+Após os dois pontos, a descrição do commit deve consistir em declarações curtas descrevendo as mudanças.
+
+Cada declaração deve começar com um verbo conjugado de forma imperativa. As declarações devem ser separadas de si mesmas com um " `;`".
+
+### Siga esse padrão:
+
+```
+git commit -m '<category: do something; do some other things>'
+
+```
+
+### Exemplo:
+
+```
+git commit -m 'feat: add novo componente de botão'
+```
+
+```
+git commit -m 'fix: add uma diretiva no componente de botão'
+```
+
+### Você pode ler mais detalhes nesses artigos/documentações
+
+[A Simplified Convention for Naming Branches and Commits in Git](https://dev.to/varbsan/a-simplified-convention-for-naming-branches-and-commits-in-git-il4)
+[Submission Guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)
