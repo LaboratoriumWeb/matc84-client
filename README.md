@@ -18,9 +18,11 @@ yarn
 yarn dev
 ```
 
+# ⚠️ ATENÇÃO: LEIA AS ORIENTAÇÕES A BAIXO
+
 # Padronização das branch's
 
-**Atenção:** As branch's devem ser criadas sempre a partir da **main**
+⚠️ **Atenção:** As branch's devem ser criadas sempre a partir da **main**
 
 Um branch git deve começar com uma categoria. Escolha uma destas: `feature`, `bugfix`, `hotfix`, ou `test`.
 
@@ -36,6 +38,14 @@ git checkout -b <category/description-in-kebab-case>
 
 ```bash
 git checkout -b feature/criar-tela-de-login
+```
+
+⚠️ Lembre-se de atualizar sua branch com a `main` antes de enviar um commit para o repositório.
+
+### Como atualizar a branch:
+
+```bash
+git rebase main
 ```
 
 # Padronização de commit
@@ -74,3 +84,15 @@ git commit -m 'fix: add uma diretiva no componente de botão'
 
 [A Simplified Convention for Naming Branches and Commits in Git](https://dev.to/varbsan/a-simplified-convention-for-naming-branches-and-commits-in-git-il4)
 [Submission Guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)
+
+## Figma
+
+[Figma](<https://www.figma.com/design/EFm41gOmhyO82NZXVfibUy/Registration-flow-(Community)?node-id=9-427&node-type=frame&t=k06ZWhHUoDIIU1Gm-0>)
+
+## Bibliotecas utilizadas nesse projeto:
+
+- Material UI
+- Tailwind
+- NextJS
+- Axios
+- Redux Toolkit
