@@ -1,7 +1,10 @@
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import { Roboto } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+config.autoAddCss = false
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
