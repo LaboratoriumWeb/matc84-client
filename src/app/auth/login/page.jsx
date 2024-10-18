@@ -1,5 +1,7 @@
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
+import Image from 'next/image';
+import login_background from '/public/img/login_background.svg';
 
 
 export default function Login() {
@@ -23,7 +25,9 @@ export default function Login() {
           />
         </FormControl>
       </div>
-      <div className="bg-gradient-to-r from-cyan-500 to-blue-500 w-3/6">imagem</div>
+      <div className="bg-gradient-to-r from-cyan-500 to-blue-500 w-3/6">
+        <Image src={login_background} alt="" />
+      </div>
     </div>
   )
 }
