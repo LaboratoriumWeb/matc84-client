@@ -1,3 +1,9 @@
+import { Box } from "@mui/material";
+
 export default function Home() {
-  return <div className="--font-roboto">Olá</div>;
+  return (
+    <Box className="--font-roboto h-full">
+      <Cadastro />
+    </Box>
+  );
 }
