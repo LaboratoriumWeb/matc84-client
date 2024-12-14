@@ -5,7 +5,8 @@ import { ForgotPassword } from './components/ForgotPassword';
 import { AuthLayout } from './components/AuthLayout';
 import { Home } from './components/Home.tsx';
 import { AuthContext } from './contexts/AuthContext.tsx';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type AuthScreen = 'login' | 'register' | 'forgot-password';
 
@@ -58,6 +59,18 @@ function App() {
           )}
         </AuthLayout>
       }
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   );
 }

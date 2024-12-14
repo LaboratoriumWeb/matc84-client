@@ -1,7 +1,10 @@
 import { ReactNode, createContext, useState } from 'react';
 import { UserModel } from '../model/user.model.ts';
+import axios from '../api/axios.ts';
+import { showMessage } from '../utils/message-handler.ts';
 
 interface AuthContextData {
+  token: string | null;
   user: UserModel | null;
   handleLogin: (email: string, password: string) => void;
   handleLogout: () => void;
@@ -16,22 +19,67 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider = (props: AuthProviderProps) => {
   const [user, setUser] = useState<UserModel | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
-  const handleRegister = (name: string, email: string, password: string) => {
-    // In a real app, you would send this data to a backend
-    setUser({ name, email });
+  const handleRegister = async (name: string, email: string, password: string) => {
+    try {
+      const response = await axios.post(
+        '/auth/create',
+        JSON.stringify({ name, email, password }),
+        {
+          headers: { 'Content-Type': 'application/json' }
+      });
+      setUser({
+        id: response.data.user.id,
+        name: response.data.user.name,
+        email: response.data.user.email
+      });
+      setToken(response.data.token);
+    } catch (error) {
+      let errorMessage;
+      if (error.status === 400) {
+        errorMessage = 'Ja existe um usuário associado a este e-mail';
+      } else {
+        errorMessage = 'Algo deu errado! Tente novamente mais tarde';
+      }
+      showMessage('error', errorMessage)
+    }
   };
 
-  const handleLogin = (email: string, password: string) => {
-    // request backend volta usuario e chama o setUser
-    setUser({ name: 'Usuário', email });
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      const response = await axios.post(
+        '/auth/login',
+        JSON.stringify({ email, password }),
+        {
+          headers: { 'Content-Type': 'application/json' }
+        });
+      setUser({
+        id: response.data.user.id,
+        name: response.data.user.name,
+        email: response.data.user.email
+      });
+      setToken(response.data.token);
+    } catch (error) {
+      let errorMessage;
+      if (error.status === 404) {
+        errorMessage = 'Usuário não encontrado';
+      } else if (error.status === 400) {
+        errorMessage = 'Dados inválidos';
+      } else {
+        errorMessage = 'Algo deu errado! Tente novamente mais tarde';
+      }
+      showMessage('error', errorMessage)
+    }
   }
 
   const handleLogout = () => {
     setUser(null);
+    setToken(null);
   }
 
   const value = {
+    token,
     user,
     handleLogin,
     handleLogout,
