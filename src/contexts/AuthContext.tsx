@@ -24,7 +24,7 @@ const AuthProvider = (props: AuthProviderProps) => {
   const handleRegister = async (name: string, email: string, password: string) => {
     try {
       const response = await axios.post(
-        '/auth/create',
+        '/users/register',
         JSON.stringify({ name, email, password }),
         {
           headers: { 'Content-Type': 'application/json' }
@@ -35,7 +35,8 @@ const AuthProvider = (props: AuthProviderProps) => {
         email: response.data.user.email
       });
       setToken(response.data.token);
-    } catch (error) {
+      localStorage.setItem('token', response.data.token);
+    } catch (error: any) {
       let errorMessage;
       if (error.status === 400) {
         errorMessage = 'Ja existe um usuário associado a este e-mail';
@@ -60,7 +61,8 @@ const AuthProvider = (props: AuthProviderProps) => {
         email: response.data.user.email
       });
       setToken(response.data.token);
-    } catch (error) {
+      localStorage.setItem('token', response.data.token);
+    } catch (error : any) {
       let errorMessage;
       if (error.status === 404) {
         errorMessage = 'Usuário não encontrado';
