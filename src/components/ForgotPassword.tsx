@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Mail, ArrowLeft } from 'lucide-react';
+import { AuthContext } from '../contexts/AuthContext.tsx';
+import { useNavigate } from 'react-router-dom';
 
-interface ForgotPasswordProps {
-  onSubmit: (email: string) => void;
-  onBackToLogin: () => void;
-}
-
-export function ForgotPassword({ onSubmit, onBackToLogin }: ForgotPasswordProps) {
-  const [email, setEmail] = React.useState('');
-  const [submitted, setSubmitted] = React.useState(false);
+export function ForgotPassword() {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const { handleForgotPassword } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(email);
+    handleForgotPassword(email);
     setSubmitted(true);
   };
 
@@ -24,7 +23,7 @@ export function ForgotPassword({ onSubmit, onBackToLogin }: ForgotPasswordProps)
           <p className="font-medium">{email}</p>
         </div>
         <button
-          onClick={onBackToLogin}
+          onClick={() => navigate('/login')}
           className="text-blue-600 hover:underline flex items-center justify-center gap-2 mx-auto"
         >
           <ArrowLeft size={16} />
@@ -62,7 +61,7 @@ export function ForgotPassword({ onSubmit, onBackToLogin }: ForgotPasswordProps)
       </form>
 
       <button
-        onClick={onBackToLogin}
+        onClick={() => navigate('/login')}
         className="text-blue-600 hover:underline flex items-center justify-center gap-2 mx-auto"
       >
         <ArrowLeft size={16} />
