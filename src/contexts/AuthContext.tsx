@@ -4,11 +4,13 @@ import axios from '../api/axios.ts';
 import { showMessage } from '../utils/message-handler.ts';
 
 interface AuthContextData {
-  token: string | null;
+  isLoggedIn: boolean;
   user: UserModel | null;
   handleLogin: (email: string, password: string) => void;
   handleLogout: () => void;
   handleRegister: (name: string, email: string, password: string) => void;
+  handleForgotPassword: (email: string) => void;
+  handleResetPassword: (token: string, password: string) => void;
 }
 
 interface AuthProviderProps {
@@ -18,7 +20,8 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider = (props: AuthProviderProps) => {
-  const [user, setUser] = useState<UserModel | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(localStorage.getItem('token') !== null);
+  const [user, setUser] = useState<UserModel | null>(localStorage.getItem('user') != null ? JSON.parse(localStorage.getItem('user')!) : null);
   const [token, setToken] = useState<string | null>(null);
 
   const handleRegister = async (name: string, email: string, password: string) => {
@@ -34,8 +37,7 @@ const AuthProvider = (props: AuthProviderProps) => {
         name: response.data.user.name,
         email: response.data.user.email
       });
-      setToken(response.data.token);
-      localStorage.setItem('token', response.data.token);
+      showMessage('success', 'Cadastro realizado com sucesso! Retorne a página de login para entrar.');
     } catch (error: any) {
       let errorMessage;
       if (error.status === 400) {
@@ -61,7 +63,9 @@ const AuthProvider = (props: AuthProviderProps) => {
         email: response.data.user.email
       });
       setToken(response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
       localStorage.setItem('token', response.data.token);
+      setIsLoggedIn(true);
     } catch (error : any) {
       let errorMessage;
       if (error.status === 404) {
@@ -75,17 +79,62 @@ const AuthProvider = (props: AuthProviderProps) => {
     }
   }
 
+  const handleForgotPassword = async (email: string) => {
+    try {
+      await axios.post(
+        '/users/password-reset',
+        JSON.stringify({ email }),
+        {
+          headers: { 'Content-Type': 'application/json' }
+        });
+      showMessage('success', 'Um email de recuperação foi enviado para o e-mail informado');
+    } catch (error : any) {
+      let errorMessage;
+      if (error.status === 400) {
+        errorMessage = 'Email não encontrado';
+      } else {
+        errorMessage = 'Algo deu errado! Tente novamente mais tarde';
+      }
+      showMessage('error', errorMessage);
+    }
+  }
+
+  const handleResetPassword = async (resetToken: string, password: string) => {
+    try {
+      const response = await axios.post(
+        '/users/reset-password/' + resetToken,
+        JSON.stringify({password}),
+        {
+          headers: { 'Content-Type': 'application/json' }
+        });
+      showMessage('success', 'Senha atualizada com sucesso! Retorne a página de login para entrar.');
+    } catch (error : any) {
+      let errorMessage;
+      if (error.status === 400) {
+        errorMessage = 'Token inválido ou expirado';
+      } else {
+        errorMessage = 'Algo deu errado! Tente novamente mais tarde';
+      }
+      showMessage('error', errorMessage)
+    }
+  }
+
   const handleLogout = () => {
     setUser(null);
     setToken(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
   }
 
   const value = {
-    token,
+    isLoggedIn,
     user,
     handleLogin,
     handleLogout,
-    handleRegister
+    handleRegister,
+    handleForgotPassword,
+    handleResetPassword
   }
 
   return (
