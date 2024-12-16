@@ -1,10 +1,10 @@
 import { LogOut, PlusCircle, UserCircle } from "lucide-react";
 import React, { useContext, useEffect } from "react";
 import axios from "../api/axios.ts";
-import { Header } from "../components/Header.tsx";
 import { Profile } from "../components/Profile.tsx";
 import { TodoItem } from "../components/TodoItem.tsx";
 import { AuthContext } from "../contexts/AuthContext.tsx";
+import {showMessage} from "../utils/message-handler.ts";
 
 interface Todo {
   id: number;
@@ -21,41 +21,40 @@ export function Home() {
 
   const handleAddTodo = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTodo.trim()) return;
+    if (!newTodo || newTodo.trim() === "") return;
 
     try {
       const response = await axios.post(
-        "tasks",
-        { description: newTodo.trim(), userId: user?.id },
+        "/tasks",
+        { description: newTodo, userId: user?.id },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      //console.log("response", response.data.task);
-      setTodos([...todos, response.data.task]); // Adiciona a tarefa retornada pelo backend
+      setTodos([...todos, response.data.task]);
       setNewTodo("");
     } catch (error) {
+      showMessage('error', 'Falha ao cadastrar nova tarefa');
       console.error("Erro ao adicionar tarefa:", error);
-      // Lidar com o erro, ex: exibir uma mensagem para o usuário
     }
   };
 
   const fetchTodos = async () => {
     try {
-      const response = await axios.get(`tasks/user/all/${user?.id}`, {
+      const response = await axios.get(`/tasks/user/all/${user?.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      //console.log("get response", response);
+      console.log(response.data)
       setTodos(response.data);
     } catch (error) {
       console.error("Erro ao buscar tarefas:", error);
-      // Lidar com o erro, ex: exibir uma mensagem para o usuário
+      showMessage("error", "Erro ao buscar tarefas");
     }
   };
 
   useEffect(() => {
     fetchTodos();
-  }, []); // Executa apenas uma vez ao montar o componente
+  }, []);
 
   const toggleTodo = async (id: number) => {
     try {
@@ -138,9 +137,6 @@ export function Home() {
       console.error('Erro ao se comunicar com o backend:', error);
     }
   };
-
-  //console.log("todos", todos);
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">

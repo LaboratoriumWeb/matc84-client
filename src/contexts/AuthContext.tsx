@@ -21,7 +21,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider = (props: AuthProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(localStorage.getItem('token') !== null);
-  const [user, setUser] = useState<UserModel | null>(null);
+  const [user, setUser] = useState<UserModel | null>(localStorage.getItem('user') != null ? JSON.parse(localStorage.getItem('user')!) : null);
   const [token, setToken] = useState<string | null>(null);
 
   const handleRegister = async (name: string, email: string, password: string) => {
@@ -37,10 +37,7 @@ const AuthProvider = (props: AuthProviderProps) => {
         name: response.data.user.name,
         email: response.data.user.email
       });
-      setToken(response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      localStorage.setItem('token', response.data.token);
-      setIsLoggedIn(true);
+      showMessage('success', 'Cadastro realizado com sucesso! Retorne a página de login para entrar.');
     } catch (error: any) {
       let errorMessage;
       if (error.status === 400) {
