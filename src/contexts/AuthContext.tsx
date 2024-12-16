@@ -85,31 +85,32 @@ const AuthProvider = (props: AuthProviderProps) => {
   const handleForgotPassword = async (email: string) => {
     try {
       await axios.post(
-        '/user/password-reset',
+        '/users/password-reset',
         JSON.stringify({ email }),
         {
           headers: { 'Content-Type': 'application/json' }
         });
-      showMessage('success', 'Um email de recuperação foi enviado para o e-mail informado')
+      showMessage('success', 'Um email de recuperação foi enviado para o e-mail informado');
     } catch (error : any) {
       let errorMessage;
       if (error.status === 400) {
-        errorMessage = 'Dados inválidos';
+        errorMessage = 'Email não encontrado';
       } else {
         errorMessage = 'Algo deu errado! Tente novamente mais tarde';
       }
-      showMessage('error', errorMessage)
+      showMessage('error', errorMessage);
     }
   }
 
   const handleResetPassword = async (resetToken: string, password: string) => {
     try {
       const response = await axios.post(
-        '/user/reset-password/' + resetToken,
-        password,
+        '/users/reset-password/' + resetToken,
+        JSON.stringify({password}),
         {
           headers: { 'Content-Type': 'application/json' }
         });
+      showMessage('success', 'Senha atualizada com sucesso! Retorne a página de login para entrar.');
     } catch (error : any) {
       let errorMessage;
       if (error.status === 400) {

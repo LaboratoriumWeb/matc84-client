@@ -67,7 +67,7 @@ export function ResetPassword() {
             />
             <button
               type="button"
-              onClick={() => setShowConfirmPassword(!showPassword)}
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
               {showConfirmPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
