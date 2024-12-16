@@ -1,10 +1,10 @@
-import React from 'react';
-import { Check, Trash2, Edit2 } from 'lucide-react';
+import { Check, Edit2, Trash2 } from "lucide-react";
+import React from "react";
 
 interface TodoItemProps {
   todo: {
     id: number;
-    text: string;
+    description: string;
     completed: boolean;
   };
   onToggle: (id: number) => void;
@@ -14,8 +14,8 @@ interface TodoItemProps {
 
 export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
   const [isEditing, setIsEditing] = React.useState(false);
-  const [editText, setEditText] = React.useState(todo.text);
-
+  const [editText, setEditText] = React.useState(todo.description);
+  console.log("todo item", todo);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onEdit(todo.id, editText);
@@ -52,10 +52,10 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
       />
       <span
         className={`flex-1 ${
-          todo.completed ? 'line-through text-gray-500' : ''
+          todo.completed ? "line-through text-gray-500" : ""
         }`}
       >
-        {todo.text}
+        {todo.description}
       </span>
       <button
         onClick={() => setIsEditing(true)}
